@@ -1,0 +1,34 @@
+{
+  "description": "Mechaneion's two hooks: at a session's start it tells the session its own conversation id, which commissions_hello takes; at a turn's end it asks the plugin's own Mechaneion server what the session of this conversation is walking away from.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh"],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:mechaneion:mechaneion",
+            "tool": "commissions_walking_away",
+            "input": {
+              "conversation": "${session_id}",
+              "stop_hook_active": "${stop_hook_active}"
+            },
+            "timeout": 30,
+            "statusMessage": "Asking Mechaneion what this session is walking away from"
+          }
+        ]
+      }
+    ]
+  }
+}

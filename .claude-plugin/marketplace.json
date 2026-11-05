@@ -1,0 +1,15 @@
+{
+  "name": "mechaneion",
+  "owner": {
+    "name": "Mechaneion",
+    "url": "https://app.mechaneion.com"
+  },
+  "description": "Mechaneion for Claude Code: the machinery you build and judge a product through, never the product itself.",
+  "plugins": [
+    {
+      "name": "mechaneion",
+      "source": "./plugins/claude-code",
+      "description": "Connects every session in a repository to its Mechaneion project, says before a turn ends what the session is walking away from, and answers what needs doing next."
+    }
+  ]
+}

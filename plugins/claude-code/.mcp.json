@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "mechaneion": {
+      "type": "http",
+      "url": "https://app.mechaneion.com/mcp",
+      "headersHelper": "sh \"${CLAUDE_PLUGIN_ROOT}/scripts/repository.sh\" \"${CLAUDE_PROJECT_DIR}\""
+    }
+  }
+}
