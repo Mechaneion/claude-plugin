@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "mechaneion",
-      "source": "./plugins/claude-code",
+      "source": "./",
       "description": "Connects every session in a repository to its Mechaneion project, says before a turn ends what the session is walking away from, and answers what needs doing next."
     }
   ]
