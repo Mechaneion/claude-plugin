@@ -23,8 +23,11 @@ The only address the plugin contacts is its MCP server, `https://app.mechaneion.
 - **Signing in** is OAuth 2.0 in your browser, started by Claude Code's `/mcp`, and Claude Code keeps the token it gets.
   The plugin reads no token, key or password from your environment or your files, and asks for none.
 - **Every Mechaneion tool call** goes to that server, with the arguments the call names.
-- **`scripts/repository.sh`** is the server's `headersHelper`: Claude Code runs it when it connects the server, with the session's project directory.
+- **`scripts/repository.sh`** is the server's `headersHelper`: Claude Code runs it when it connects the server, from the plugin's own folder.
+  It takes the session's project directory to be the working directory of the Claude Code process that runs it, read with `lsof` on macOS or from `/proc` on Linux, with `ps` naming each process and its parent so that a shell standing between them is passed over; it reads nothing else of any process.
+  A directory given as its argument, or in `CLAUDE_PROJECT_DIR`, is used instead; the plugin's own `.mcp.json` passes neither.
   It runs `git remote get-url` there, on `origin` or else the first remote, and Claude Code sends what it prints as the `Mechaneion-Repository` header on every request to the server, the sign-in's included.
+  When it cannot find the project directory it sends no header, and the server answers as it does a session that named no repository.
   It sends the remote's host and path only, such as `github.com/Acme/Alpha`: the scheme, any username or credential in the URL, and a trailing `.git` are left out.
   A repository with no remote is sent as `local:` and the full path of its git folder on your disk, a folder that is no repository as `dir:` and its full path, and a name with any character outside printable ASCII as its SHA-256 digest instead.
   That header is how the server knows which of your projects a session is for.
