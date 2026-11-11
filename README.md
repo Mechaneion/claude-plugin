@@ -39,11 +39,17 @@ The only address the plugin contacts is its MCP server, `https://app.mechaneion.
   It takes the session's project directory to be the working directory of the Claude Code process that runs it, read with `lsof` on macOS or from `/proc` on Linux, with `ps` naming each process and its parent so that a shell standing between them is passed over; it reads nothing else of any process.
   A directory given as its argument, or in `CLAUDE_PROJECT_DIR`, is used instead; the plugin's own `.mcp.json` passes neither.
   It runs `git remote get-url` there, on `origin` or else the first remote, and Claude Code sends what it prints as the `Mechaneion-Repository` header on every request to the server, the sign-in's included.
-  When it cannot find the project directory it sends no header, and the server answers as it does a session that named no repository.
   It sends the remote's host and path only, such as `github.com/Acme/Alpha`: the scheme, any username or credential in the URL, and a trailing `.git` are left out.
   A repository with no remote is sent as `local:` and the full path of its git folder on your disk, a folder that is no repository as `dir:` and its full path, and a name with any character outside printable ASCII as its SHA-256 digest instead.
-  That header is how the server knows which of your projects a session is for.
-- **A `SessionStart` hook** runs `hooks/session-start.sh` at each session's start, after `/clear` and after a compaction.
+  Whenever it names the repository it also prints an empty `Mechaneion-Folder` header, so the folder below is not sent.
+  When it cannot find the project directory it prints no header, and on Windows it never runs: Claude Code runs a helper through `cmd.exe`, which has no `sh`, so it logs that the helper did not return a valid value and connects without it.
+  The `Mechaneion-Repository` header is how the server knows which of your projects a session is for.
+- **The server's `Mechaneion-Folder` header** is the session's project folder, which Claude Code fills in from `${CLAUDE_PROJECT_DIR}` as the full path on your disk, such as `C:\Users\Ada\Alpha`.
+  Claude Code sends it on every request to the server only when `scripts/repository.sh` named no repository, and the server then knows the session's repository by that folder: each worktree and each clone of a repository is a repository of its own there, asked about once.
+  A folder whose path has a character Claude Code cannot put in a header, one above U+00FF, stops Claude Code connecting the server at all in a session `scripts/repository.sh` cannot name.
+- **The server's `Mechaneion-Client` header** says `claude-code-plugin` on every request, and nothing else: it tells the server the call is the plugin's.
+  A call from the plugin that names neither its repository nor its folder is answered with what went wrong and how to fix it, and reaches none of your projects.
+- **A `SessionStart` hook** runs `sh` on `hooks/session-start.sh` through Claude Code's own shell, Git Bash on Windows, at each session's start, after `/clear` and after a compaction.
   It reads the hook's input from Claude Code, or `CLAUDE_CODE_SESSION_ID` when the input names no session, and prints the session's id into the session's context with a line on how to sign in.
   It contacts nothing and writes nothing.
 - **A `Stop` hook** calls the server's `commissions_walking_away` tool at each turn's end, with the session's id and whether a `Stop` hook is already running.

@@ -3,6 +3,10 @@
     "mechaneion": {
       "type": "http",
       "url": "https://app.mechaneion.com/mcp",
+      "headers": {
+        "Mechaneion-Folder": "${CLAUDE_PROJECT_DIR}",
+        "Mechaneion-Client": "claude-code-plugin"
+      },
       "headersHelper": "sh \"${CLAUDE_PLUGIN_ROOT}/scripts/repository.sh\""
     }
   }

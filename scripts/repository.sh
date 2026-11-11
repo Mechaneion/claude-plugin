@@ -12,8 +12,19 @@
 #   1. its first argument, which the plugin's .mcp.json passed as "${CLAUDE_PROJECT_DIR}" up to version 0.2.2;
 #   2. CLAUDE_PROJECT_DIR in its environment, should Claude Code ever put it there;
 #   3. the working directory of the Claude Code process that runs it, read with lsof on macOS and from /proc on Linux;
-#   4. none, and then it prints {}: Claude Code sends no Mechaneion-Repository header, and the server answers the
-#      session as one that named no repository.
+#   4. none, and then it prints {}: Claude Code sends no Mechaneion-Repository header, and the server names the
+#      repository from the Mechaneion-Folder header instead, which the plugin's .mcp.json declares as
+#      "${CLAUDE_PROJECT_DIR}" and Claude Code fills with the session's folder.
+#
+# **On Windows this script never runs**: Claude Code runs a headersHelper through cmd.exe, which has no `sh`, logs that
+# the helper "did not return a valid value", and connects without its headers (measured on a Windows machine,
+# 2026-11-11). So there the static Mechaneion-Folder header is all that names the repository, and it is sent.
+#
+# **Whenever it names the repository it blanks Mechaneion-Folder**, printing it as "", which Claude Code sends in
+# place of the static one (measured on Claude Code 2.1.322: a header a helper prints replaces a static header of the
+# same name, as Claude Code's documentation of MCP servers says). So the folder leaves the machine only when nothing
+# better names the repository, and a folder Claude Code cannot send at all — one with a character above U+00FF in
+# its path, measured the same day, fails the whole connection — fails no session this script can name.
 #
 # **Never its own working directory**: Claude Code runs a plugin's helper from the plugin's root, so `pwd` here is
 # the plugin and never the project, and a plugin root inside a clone would send that clone's name for the session's.
@@ -112,5 +123,5 @@ if printf '%s' "$named" | LC_ALL=C grep -q '[^ -~]'; then
   named="sha256:$(printf '%s' "$named" | shasum -a 256 2>/dev/null | cut -d ' ' -f 1)"
 fi
 escaped=$(printf '%s' "$named" | sed 's/\\/\\\\/g; s/"/\\"/g')
-printf '{"Mechaneion-Repository":"%s"}\n' "$escaped"
+printf '{"Mechaneion-Repository":"%s","Mechaneion-Folder":""}\n' "$escaped"
 exit 0
