@@ -15,6 +15,10 @@ claude plugin install mechaneion --marketplace Mechaneion/claude-plugin --scope 
 Then sign in once: in Claude Code run `/mcp`, choose `plugin:mechaneion:mechaneion` and *Authenticate*.
 Your browser opens app.mechaneion.com, which signs you in and asks which of your projects the repository is for, or makes a new one.
 Every other repository asks once, the first time a Mechaneion tool is called there.
+Until you sign in, Claude Code reports an error at the end of each turn: that is the plugin's `Stop` hook, which calls the plugin's server and cannot reach it before you have signed in.
+
+If you work in Claude Code, connect Mechaneion with the plugin and never as a claude.ai connector, because a claude.ai connector reaches its one project from every repository you open.
+If you have added it as one, `/mcp` turns that connector off in the repository you run it in, and `"disableClaudeAiConnectors": true` in a repository's `.claude/settings.json` turns off every claude.ai connector Claude Code fetches there, not only Mechaneion's.
 
 ## What it runs, sends and keeps
 

@@ -1,7 +1,7 @@
 ---
 name: connect
 description: Retired. Says how the Mechaneion plugin connects a repository now, with nothing to copy, and connects nothing itself. Run as /mechaneion:connect.
-argument-hint: (none: the plugin asks which project)
+argument-hint: "(none: the plugin asks which project)"
 disable-model-invocation: true
 allowed-tools: Bash(sh ${CLAUDE_PLUGIN_ROOT}/scripts/connect.sh *)
 ---
