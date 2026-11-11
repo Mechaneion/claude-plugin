@@ -20,6 +20,14 @@ Until you sign in, Claude Code reports an error at the end of each turn: that is
 If you work in Claude Code, connect Mechaneion with the plugin and never as a claude.ai connector, because a claude.ai connector reaches its one project from every repository you open.
 If you have added it as one, `/mcp` turns that connector off in the repository you run it in, and `"disableClaudeAiConnectors": true` in a repository's `.claude/settings.json` turns off every claude.ai connector Claude Code fetches there, not only Mechaneion's.
 
+## Your tests and your claims
+
+A claim reads as held by a test only once your repository's own checks have sent the list of its tests and their results.
+Mechaneion ships no adapter for any test runner, so that step is your repository's own, and your agent writes it: until a list has been sent, the Mechaneion tools tell your agent how, in the answers it reads while tying claims to tests and as the first piece of work of the first task it starts.
+They show it how to get the names and results out of vitest, jest, node:test, pytest and dotnet test, as text it adapts to your runner.
+The step ends with one `curl` that sends the results to `https://app.mechaneion.com/report/<project id>/run` with a project token, minted on *Other / CI* under *Settings → Your agent* and held as your checks' secret; nothing is installed for it.
+The plugin itself runs no tests and sends no test results.
+
 ## What it runs, sends and keeps
 
 The only address the plugin contacts is its MCP server, `https://app.mechaneion.com/mcp`, over HTTPS.
