@@ -13,6 +13,9 @@ Install it for yourself, which turns it on in every repository you open:
 claude plugin install mechaneion --marketplace Mechaneion/claude-plugin --scope user
 ```
 
+Turn on its auto-update: run `/plugin` in Claude Code, open Marketplaces, choose `mechaneion`, and turn on auto-update.
+Until that is on, Claude Code keeps the plugin as it was installed, and `claude plugin update mechaneion@mechaneion` updates it now.
+
 Then sign in once: in Claude Code run `/mcp`, choose `plugin:mechaneion:mechaneion` and *Authenticate*.
 Your browser opens app.mechaneion.com, which signs you in and asks which of your projects the repository is for, or makes a new one.
 Every other repository asks once, the first time a Mechaneion tool is called there.
