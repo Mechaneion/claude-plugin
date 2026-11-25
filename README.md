@@ -6,6 +6,7 @@ You need a Mechaneion account, from https://mechaneion.com.
 
 ## Install
 
+It needs Claude Code 2.1.299 or later: `claude --version` says which you have, and `claude update` updates it.
 Install it for yourself, which turns it on in every repository you open:
 
 ```
