@@ -11,7 +11,7 @@ The three calls below are reads and write nothing.
 
 1. Call `commissions_bearings`, with `"session"` set to your session key if `commissions_hello` gave you one in this conversation, and with nothing otherwise.
    It says how many commissions are in each of the board's buckets, how many wait on the person, what your session holds, and its one suggested next pick.
-2. Call `commissions_board` with `{"buckets": ["FOR YOU", "WORKING", "NOT LANDED", "TEST FAILING", "TEST OWED", "NO VERDICT", "CLAIMS IN THE WAY", "RULING TO WRITE", "PART DONE", "NOT STARTED", "STALLED", "CAN'T BE TOLD"]}`: every bucket but DONE.
+2. Call `commissions_board` with `{"buckets": ["FOR YOU", "WORKING", "NOT LANDED", "TEST FAILING", "TEST OWED", "NO VERDICT", "CLAIMS IN THE WAY", "RULING TO WRITE", "SENT BACK", "PART DONE", "NOT STARTED", "STALLED", "CAN'T BE TOLD", "PAUSED"]}`: every bucket but DONE.
    Each line is a commission, the bucket it is in and why, and who holds it.
 3. Call `owed_list` with `{}`: the decisions the person put off and has not ruled yet.
 
@@ -20,8 +20,9 @@ Each line says what the thing is by its own words, as the tools gave them — a 
 Each line says who it waits on, in these words:
 
 - **waits on you** — a commission in FOR YOU, which the board names with the one act it waits on you for, and every decision `owed_list` lists;
-- **waits on an agent** — a commission in any other bucket but DONE, with who holds it when the board names a holder, and "nobody has taken it" when it names none;
-- **being worked** — a commission in WORKING, with who holds it.
+- **waits on an agent** — a commission in any other bucket but PAUSED and DONE, with who holds it when the board names a holder, and "nobody has taken it" when it names none;
+- **being worked** — a commission in WORKING, with who holds it;
+- **paused** — a commission in PAUSED, which owes only a step a person paused, with who paused it and how long ago: nobody runs it until a person resumes it.
 
 End with the bearings' suggested next pick, in its own words.
 If a tool says something could not be read, say that line too, so an absence is never read as nothing to do.
