@@ -19,7 +19,8 @@ Then answer the person in a few lines, at most one line for each thing and the m
 Each line says what the thing is by its own words, as the tools gave them — a commission by its title, a decision by its words — and never by its key alone.
 Each line says who it waits on, in these words:
 
-- **waits on you** — a commission in FOR YOU, which the board names with the one act it waits on you for, and every decision `owed_list` lists;
+- **waits on you** — a commission in FOR YOU, which the board names with the one act it waits on you for, and each decision `owed_list` lists whose work waits on it;
+- **holds nothing up** — a decision `owed_list` lists that holds up no work, which it says nothing waits on: it waits apart from For you until work needs the answer, so never say it waits on you;
 - **waits on an agent** — a commission in any other bucket but PAUSED and DONE, with who holds it when the board names a holder, and "nobody has taken it" when it names none;
 - **being worked** — a commission in WORKING, with who holds it;
 - **paused** — a commission in PAUSED, which owes only a step a person paused, with who paused it and how long ago: nobody runs it until a person resumes it.
